@@ -1,0 +1,83 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Мой профиль{% endblock %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle"></i> {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endif %}
+<h1 class="mb-4" style="color: var(--green-dark);">Мой профиль</h1>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 style="color: var(--green-dark);"><i class="bi bi-person-gear"></i> Личные данные</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Имя</label>
+                        {{ form.first_name }}
+                        {% if 'first_name' in missing_fields %}
+                        <small class="text-danger">Заполните это поле</small>
+                        {% endif %}
+                        {% if form.first_name.errors %}<div class="text-danger mt-1">{{ form.first_name.errors }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Телефон</label>
+                        {{ form.phone }}
+                        {% if 'phone' in missing_fields %}
+                        <small class="text-danger">Заполните это поле</small>
+                        {% endif %}
+                        {% if form.phone.errors %}<div class="text-danger mt-1">{{ form.phone.errors }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}<div class="text-danger mt-1">{{ form.email.errors }}</div>{% endif %}
+                    </div>
+                    <button type="submit" name="save_profile" class="btn btn-cart">
+                        <i class="bi bi-check-circle"></i> Сохранить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 style="color: var(--green-dark);"><i class="bi bi-shield-lock"></i> Смена пароля</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Текущий пароль</label>
+                        {{ password_form.old_password }}
+                        {% if password_form.old_password.errors %}<div class="text-danger mt-1">{{ password_form.old_password.errors }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Новый пароль</label>
+                        {{ password_form.new_password1 }}
+                        <small class="text-muted">{{ password_form.new_password1.help_text }}</small>
+                        {% if password_form.new_password1.errors %}<div class="text-danger mt-1">{{ password_form.new_password1.errors }}</div>{% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Подтверждение пароля</label>
+                        {{ password_form.new_password2 }}
+                        {% if password_form.new_password2.errors %}<div class="text-danger mt-1">{{ password_form.new_password2.errors }}</div>{% endif %}
+                    </div>
+                    {% if password_form.non_field_errors %}<div class="text-danger mb-2">{{ password_form.non_field_errors }}</div>{% endif %}
+                    <button type="submit" name="change_password" class="btn btn-accent">
+                        <i class="bi bi-key"></i> Сменить пароль
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

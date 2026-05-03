@@ -1,0 +1,46 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Избранное{% endblock %}
+
+{% block content %}
+<h1 class="section-title mb-4"><i class="bi bi-heart-fill" style="color: #e63946;"></i> Избранное</h1>
+
+{% if favorites %}
+<div class="row">
+    {% for fav in favorites %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            {% if fav.product.image %}
+                <img src="{{ fav.product.image.url }}" class="card-img-top" alt="{{ fav.product.name }}">
+            {% else %}
+                <div class="card-img-top no-photo d-flex align-items-center justify-content-center flex-column">
+                    <i class="bi bi-tree" style="font-size: 3rem;"></i>
+                    <small class="mt-1">Фото скоро</small>
+                </div>
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ fav.product.name }}</h5>
+                <p class="price-tag mb-3">{{ fav.product.price }} ₽</p>
+                <div class="mt-auto d-flex flex-column gap-2">
+                    <a href="{% url 'shop:cart_add' fav.product.id %}" class="btn btn-cart w-100">
+                        <i class="bi bi-basket2-fill"></i> В корзину
+                    </a>
+                    <a href="{% url 'shop:favorite_remove' fav.product.id %}" class="btn btn-outline-danger w-100" style="border-radius: 10px;">
+                        <i class="bi bi-heart-fill"></i> Убрать
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-heart" style="font-size: 4rem; color: var(--green-pale);"></i>
+    <p class="mt-3 text-muted fs-5">В избранном пока ничего нет</p>
+    <a href="{% url 'shop:product_list' %}" class="btn btn-cart btn-lg mt-2">
+        <i class="bi bi-tree"></i> Перейти в каталог
+    </a>
+</div>
+{% endif %}
+{% endblock %}

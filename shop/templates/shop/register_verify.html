@@ -1,0 +1,36 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Подтверждение регистрации{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-envelope-check" style="font-size: 3rem; color: var(--green-main);"></i>
+                <h3 class="mt-3" style="color: var(--green-dark);">Подтвердите email</h3>
+                <p class="text-muted">Мы отправили код на <strong>{{ email }}</strong>. Введите его ниже.</p>
+
+                {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="text" name="code" class="form-control text-center"
+                               style="font-size: 1.5rem; letter-spacing: 8px;"
+                               maxlength="6" placeholder="000000" autofocus required>
+                    </div>
+                    <button type="submit" class="btn btn-cart btn-lg w-100">
+                        <i class="bi bi-check-circle"></i> Подтвердить
+                    </button>
+                </form>
+
+                <p class="mt-3 text-muted small">Код действителен 10 минут.</p>
+                <a href="{% url 'shop:register' %}" class="text-muted small">Зарегистрироваться с другим email</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

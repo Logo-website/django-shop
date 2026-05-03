@@ -1,0 +1,140 @@
+{% extends "shop/base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mb-4">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.name }}" style="border-radius: 16px !important; width: 100%; max-height: 500px; object-fit: cover;">
+        {% else %}
+            <div class="no-photo d-flex align-items-center justify-content-center rounded" style="height: 400px; border-radius: 16px !important;">
+                <div class="text-center">
+                    <i class="bi bi-tree" style="font-size: 5rem;"></i>
+                    <p class="mt-2">Фото скоро</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb" style="font-size: 0.9rem;">
+                <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}" style="color: var(--green-main);">Каталог</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'shop:product_list_by_category' product.category.slug %}" style="color: var(--green-main);">{{ product.category.name }}</a></li>
+                <li class="breadcrumb-item active">{{ product.name }}</li>
+            </ol>
+        </nav>
+
+        <h1 style="color: var(--green-dark);">{{ product.name }}</h1>
+        <p class="text-muted"><i class="bi bi-flower1"></i> {{ product.category.name }}</p>
+
+        {% if avg_rating %}
+        <p class="mb-2">
+            <span class="text-warning">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= avg_rating %}
+                        <i class="bi bi-star-fill"></i>
+                    {% else %}
+                        <i class="bi bi-star"></i>
+                    {% endif %}
+                {% endfor %}
+            </span>
+            <span class="text-muted ms-2">{{ avg_rating|floatformat:1 }} из 5 ({{ reviews|length }} отзывов)</span>
+        </p>
+        {% endif %}
+
+        <div class="price-tag mb-3" style="font-size: 2rem;">{{ product.price }} ₽</div>
+
+        {% if product.description %}
+        <div class="p-3 rounded mb-3" style="background: #fff; border-left: 4px solid var(--green-main);">
+            <p class="mb-0">{{ product.description }}</p>
+        </div>
+        {% endif %}
+
+        <div class="d-flex gap-2 mt-3">
+            <a href="{% url 'shop:cart_add' product.id %}" class="btn btn-cart btn-lg px-4">
+                <i class="bi bi-basket2-fill"></i> В корзину
+            </a>
+            <a href="{% url 'shop:product_list' %}" class="btn btn-detail btn-lg px-4">
+                <i class="bi bi-arrow-left"></i> Назад
+            </a>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5" style="border-color: var(--green-pale);">
+
+<h3 class="section-title mb-4">Отзывы</h3>
+
+{% if user.is_authenticated and form %}
+<div class="card mb-4" style="border-left: 4px solid var(--green-main);">
+    <div class="card-body">
+        <h5 style="color: var(--green-dark);">Оставить отзыв</h5>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Оценка</label>
+                <div class="d-flex gap-3">
+                    {% for radio in form.rating %}
+                    <div class="form-check">
+                        {{ radio }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if form.rating.errors %}
+                <div class="text-danger">{{ form.rating.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Ваш отзыв</label>
+                {{ form.text }}
+                {% if form.text.errors %}
+                <div class="text-danger">{{ form.text.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-cart">
+                <i class="bi bi-send"></i> Отправить
+            </button>
+        </form>
+    </div>
+</div>
+{% elif user.is_authenticated and user_review %}
+<div class="alert" style="background: var(--green-pale); color: var(--green-dark); border: none; border-radius: 12px;">
+    <i class="bi bi-check-circle"></i> Вы уже оставили отзыв на этот товар.
+</div>
+{% elif user.is_authenticated and not has_purchased %}
+<div class="alert alert-light" style="border-radius: 12px;">
+    <i class="bi bi-info-circle"></i> Оставлять отзывы могут только покупатели этого товара.
+</div>
+{% elif not user.is_authenticated %}
+<p class="text-muted"><a href="{% url 'shop:login' %}" style="color: var(--green-main);">Войдите</a>, чтобы оставить отзыв.</p>
+{% endif %}
+
+{% for review in reviews %}
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+                <strong style="color: var(--green-dark);"><i class="bi bi-person-circle"></i> {{ review.user.username }}</strong>
+                <span class="text-warning ms-2">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= review.rating %}
+                            <i class="bi bi-star-fill"></i>
+                        {% else %}
+                            <i class="bi bi-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+            <small class="text-muted">{{ review.created|date:"d.m.Y H:i" }}</small>
+        </div>
+        <p class="mb-0">{{ review.text }}</p>
+    </div>
+</div>
+{% empty %}
+<div class="text-center py-4">
+    <i class="bi bi-chat-dots" style="font-size: 2.5rem; color: var(--green-pale);"></i>
+    <p class="text-muted mt-2">Отзывов пока нет. Будьте первым!</p>
+</div>
+{% endfor %}
+{% endblock %}

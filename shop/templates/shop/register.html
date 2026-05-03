@@ -1,0 +1,59 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <h1 class="mb-4">Регистрация</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Логин</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <div class="text-danger mt-1">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Пароль</label>
+                <div class="input-group">
+                    <input type="password" name="password1" id="id_password1"
+                           class="form-control"
+                           value="{{ form.password1.value|default:'' }}">
+                    <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('id_password1', 'eye1')">
+                        <i id="eye1" class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <small class="text-muted">{{ form.password1.help_text }}</small>
+                {% if form.password1.errors %}
+                <div class="text-danger mt-1">{{ form.password1.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Подтверждение пароля</label>
+                <input type="password" name="password2" id="id_password2" class="form-control">
+                {% if form.password2.errors %}
+                <div class="text-danger mt-1">{{ form.password2.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100">Зарегистрироваться</button>
+        </form>
+        <p class="mt-3 text-center">Уже есть аккаунт? <a href="{% url 'shop:login' %}">Войти</a></p>
+    </div>
+</div>
+
+<script>
+function togglePassword(fieldId, eyeId) {
+    const field = document.getElementById(fieldId);
+    const eye = document.getElementById(eyeId);
+    if (field.type === 'password') {
+        field.type = 'text';
+        eye.className = 'bi bi-eye-slash';
+    } else {
+        field.type = 'password';
+        eye.className = 'bi bi-eye';
+    }
+}
+</script>
+{% endblock %}

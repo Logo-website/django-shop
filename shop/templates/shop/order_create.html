@@ -1,0 +1,78 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+<h1 class="mb-4" style="color: var(--green-dark);">Оформление заказа</h1>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <h5 style="color: var(--green-dark);"><i class="bi bi-bag-check"></i> Детали заказа</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Пункт самовывоза</label>
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                        <div class="text-danger mt-1">{{ form.address.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Комментарий к заказу <span class="text-muted">(необязательно)</span></label>
+                        {{ form.comment }}
+                        {% if form.comment.errors %}
+                        <div class="text-danger mt-1">{{ form.comment.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Способ оплаты</label>
+                        <div class="d-flex flex-column gap-2">
+                            {% for radio in form.payment_method %}
+                            <div class="form-check p-3" style="background: var(--green-bg); border-radius: 10px;">
+                                {{ radio.tag }}
+                                <label class="form-check-label ms-2" for="{{ radio.id_for_label }}">
+                                    {% if radio.choice_value == 'cash' %}
+                                        <i class="bi bi-cash-coin" style="color: var(--green-main);"></i>
+                                    {% else %}
+                                        <i class="bi bi-credit-card" style="color: var(--green-main);"></i>
+                                    {% endif %}
+                                    {{ radio.choice_label }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if form.payment_method.errors %}
+                        <div class="text-danger mt-1">{{ form.payment_method.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-accent btn-lg w-100">
+                        <i class="bi bi-bag-check"></i> Оформить заказ
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card" style="border: 2px solid var(--green-main);">
+            <div class="card-body">
+                <h5 style="color: var(--green-dark);"><i class="bi bi-receipt"></i> Ваш заказ</h5>
+                <ul class="list-group list-group-flush">
+                    {% for item in cart %}
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                        <span class="fw-bold">{{ item.total_price }} ₽</span>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="fw-bold">Итого</span>
+                        <span class="price-tag">{{ cart.get_total_price }} ₽</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

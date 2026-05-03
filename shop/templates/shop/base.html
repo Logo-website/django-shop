@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Саженцы{% endblock %} | Зелёный Сад</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-dark: #1a4d2e;
+            --green-main: #2d6a4f;
+            --green-light: #40916c;
+            --green-pale: #b7e4c7;
+            --green-bg: #f0f7f4;
+            --accent: #d4a373;
+            --accent-dark: #b8864a;
+            --text-dark: #2b2b2b;
+            --text-muted: #6b7280;
+        }
+
+        * { transition: all 0.2s ease; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            background: var(--green-bg);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main { flex: 1; }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Merriweather', serif;
+        }
+
+        /* === NAVBAR === */
+        .navbar {
+            background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 100%) !important;
+            padding: 0.8rem 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+        }
+
+        .navbar-brand {
+            font-family: 'Merriweather', serif;
+            font-size: 1.4rem !important;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-brand i {
+            color: var(--green-pale);
+        }
+
+        .nav-search .form-control {
+            border: none;
+            border-radius: 25px 0 0 25px;
+            padding: 0.5rem 1.2rem;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-search .form-control::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .nav-search .form-control:focus {
+            background: rgba(255,255,255,0.25);
+            box-shadow: none;
+            color: #fff;
+        }
+
+        .nav-search .btn {
+            border-radius: 0 25px 25px 0;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
+
+        .nav-search .btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-btn {
+            border-radius: 20px !important;
+            padding: 0.4rem 1rem !important;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* === CARDS === */
+        .card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(45, 106, 79, 0.15);
+        }
+
+        .card-img-top {
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .no-photo {
+            height: 240px;
+            background: linear-gradient(135deg, var(--green-pale) 0%, #d8f3dc 100%) !important;
+            color: var(--green-main) !important;
+        }
+
+        .card-body {
+            padding: 1.3rem;
+        }
+
+        .card-title {
+            font-family: 'Merriweather', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--green-dark);
+        }
+
+        .price-tag {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--green-main);
+        }
+
+        .price-tag small {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        /* === BUTTONS === */
+        .btn-cart {
+            background: var(--green-main);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 0.5rem;
+        }
+
+        .btn-cart:hover {
+            background: var(--green-dark);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45, 106, 79, 0.3);
+        }
+
+        .btn-detail {
+            background: transparent;
+            color: var(--green-main);
+            border: 2px solid var(--green-pale);
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 0.4rem;
+        }
+
+        .btn-detail:hover {
+            background: var(--green-bg);
+            color: var(--green-dark);
+            border-color: var(--green-main);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .btn-accent:hover {
+            background: var(--accent-dark);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 163, 115, 0.4);
+        }
+
+        /* === CATEGORIES === */
+        .category-list .list-group-item {
+            border: none;
+            border-radius: 10px !important;
+            margin-bottom: 4px;
+            padding: 0.7rem 1rem;
+            font-weight: 500;
+            color: var(--green-dark);
+            background: #fff;
+        }
+
+        .category-list .list-group-item:hover {
+            background: var(--green-pale);
+            color: var(--green-dark);
+        }
+
+        .category-list .list-group-item.active {
+            background: var(--green-main) !important;
+            border-color: var(--green-main) !important;
+            color: #fff !important;
+        }
+
+        .category-list .list-group-item.active a {
+            color: #fff !important;
+        }
+
+        .category-list .list-group-item a {
+            color: inherit;
+        }
+
+        /* === SORT BUTTONS === */
+        .sort-btn {
+            border-radius: 20px !important;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.35rem 1rem;
+        }
+
+        .sort-btn.active-sort {
+            background: var(--green-main) !important;
+            border-color: var(--green-main) !important;
+            color: #fff !important;
+        }
+
+        /* === HEART === */
+        .heart-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--green-bg);
+            border: none;
+            font-size: 1.1rem;
+        }
+
+        .heart-btn:hover {
+            background: #ffe5e5;
+            transform: scale(1.15);
+        }
+
+        .heart-btn.active {
+            background: #ffe5e5;
+            color: #e63946;
+        }
+
+        /* === PAGINATION === */
+        .pagination .page-link {
+            border: none;
+            border-radius: 10px !important;
+            margin: 0 3px;
+            color: var(--green-main);
+            font-weight: 600;
+            padding: 0.5rem 0.85rem;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--green-main);
+            color: #fff;
+        }
+
+        .pagination .page-link:hover {
+            background: var(--green-pale);
+            color: var(--green-dark);
+        }
+
+        /* === HERO === */
+        .hero {
+            background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 50%, var(--green-light) 100%);
+            color: #fff;
+            padding: 3.5rem 0;
+            margin: -1.5rem -12px 2rem -12px;
+            border-radius: 0 0 30px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 500px;
+        }
+
+        .hero .btn {
+            border-radius: 25px;
+            padding: 0.7rem 2rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background: linear-gradient(135deg, var(--green-dark) 0%, #0f3320 100%);
+            color: rgba(255,255,255,0.8);
+            padding: 2.5rem 0 1.5rem;
+        }
+
+        footer h6 {
+            color: var(--green-pale);
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        footer a:hover {
+            color: var(--green-pale);
+        }
+
+        footer .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* === BADGE === */
+        .badge-cart {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            font-size: 0.7rem;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* === MISC === */
+        .section-title {
+            font-family: 'Merriweather', serif;
+            color: var(--green-dark);
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--green-main);
+            border-radius: 2px;
+        }
+
+        /* === SEARCH SUGGESTIONS === */
+        #search-suggestions a:hover {
+            background: var(--green-bg);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .card { animation: fadeInUp 0.4s ease forwards; }
+        .col-md-4:nth-child(2) .card { animation-delay: 0.1s; }
+        .col-md-4:nth-child(3) .card { animation-delay: 0.2s; }
+        .col-md-4:nth-child(4) .card { animation-delay: 0.1s; }
+        .col-md-4:nth-child(5) .card { animation-delay: 0.2s; }
+        .col-md-4:nth-child(6) .card { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'shop:product_list' %}">
+            <i class="bi bi-tree"></i> Зелёный Сад
+        </a>
+        <form class="d-flex mx-auto nav-search position-relative" method="get" action="{% url 'shop:product_list' %}" style="max-width: 400px; width: 100%;">
+            <input id="search-input" class="form-control" type="search" name="q" placeholder="Найти саженцы..." value="{{ request.GET.q|default:'' }}" autocomplete="off">
+            <button class="btn" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+            <div id="search-suggestions" class="position-absolute w-100" style="top: 100%; left: 0; background: white; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); z-index: 1000; display: none; margin-top: 5px; overflow: hidden;"></div>
+        </form>
+        <div class="d-flex align-items-center gap-2">
+            <a class="btn btn-outline-light nav-btn position-relative" href="{% url 'shop:cart_detail' %}">
+                <i class="bi bi-basket2"></i> Корзина
+                {% if cart_total_items %}
+                <span class="badge-cart">{{ cart_total_items }}</span>
+                {% endif %}
+            </a>
+            {% if user.is_authenticated %}
+                <a class="btn btn-outline-light nav-btn position-relative" href="{% url 'shop:favorite_list' %}">
+                    <i class="bi bi-heart-fill" style="color: #e63946;"></i>
+                    {% if fav_total_items %}
+                    <span class="badge-cart">{{ fav_total_items }}</span>
+                    {% endif %}
+                </a>
+                <div class="dropdown">
+                    <button class="btn btn-outline-light nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i> {{ user.username }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" style="border-radius: 12px; border: none; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
+                        <li><a class="dropdown-item" href="{% url 'shop:profile_edit' %}"><i class="bi bi-person-gear"></i> Мой профиль</a></li>
+                        <li><a class="dropdown-item" href="{% url 'shop:order_history' %}"><i class="bi bi-bag-check"></i> История заказов</a></li>
+                    </ul>
+                </div>
+                <a class="btn btn-outline-danger nav-btn" href="{% url 'shop:logout' %}">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            {% else %}
+                <a class="btn btn-outline-light nav-btn" href="{% url 'shop:login' %}">Войти</a>
+                <a class="btn btn-light nav-btn" style="color: var(--green-dark);" href="{% url 'shop:register' %}">Регистрация</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<main class="container mt-4">
+    {% block hero %}{% endblock %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h6><i class="bi bi-tree"></i> Зелёный Сад</h6>
+                <p style="font-size: 0.9rem;">Качественные саженцы деревьев и кустарников с доставкой по всей России.</p>
+            </div>
+            <div class="col-md-2">
+                <h6>Каталог</h6>
+                <div class="d-flex flex-column gap-1">
+                    <a href="{% url 'shop:product_list' %}">Все саженцы</a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h6>Покупателям</h6>
+                <div class="d-flex flex-column gap-1">
+                    <a href="{% url 'shop:cart_detail' %}">Корзина</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'shop:profile' %}">Личный кабинет</a>
+                    <a href="{% url 'shop:favorite_list' %}">Избранное</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h6>Контакты</h6>
+                <div class="d-flex flex-column gap-1">
+                    <span><i class="bi bi-geo-alt"></i> Уфа, Россия</span>
+                    <span><i class="bi bi-telephone"></i> +1 (352) 936-89-22</span>
+                    <span><i class="bi bi-envelope"></i> idi_in_ass@mail.ru</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            &copy; 2026 Зелёный Сад. За качество отвечаем.
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const searchInput = document.getElementById('search-input');
+const suggestionsBox = document.getElementById('search-suggestions');
+let searchTimeout;
+
+searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    const query = this.value.trim();
+
+    if (query.length < 1) {
+        suggestionsBox.style.display = 'none';
+        return;
+    }
+
+    searchTimeout = setTimeout(() => {
+        fetch(`/api/search/?q=${encodeURIComponent(query)}`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.results.length === 0) {
+                    suggestionsBox.innerHTML = '<div class="p-3 text-muted text-center">Ничего не найдено</div>';
+                } else {
+                    suggestionsBox.innerHTML = data.results.map(p => `
+                        <a href="${p.url}" class="d-flex align-items-center p-2 text-decoration-none" style="color: #2b2b2b; border-bottom: 1px solid #f0f0f0;">
+                            ${p.image ? `<img src="${p.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px; margin-right: 10px;">` : '<div style="width: 40px; height: 40px; background: #b7e4c7; border-radius: 6px; margin-right: 10px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-tree" style="color: #2d6a4f;"></i></div>'}
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: #1a4d2e;">${p.name}</div>
+                                <small style="color: #2d6a4f;">${p.price} ₽</small>
+                            </div>
+                        </a>
+                    `).join('');
+                }
+                suggestionsBox.style.display = 'block';
+            })
+            .catch(() => {
+                suggestionsBox.style.display = 'none';
+            });
+    }, 300);
+});
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-search')) {
+        suggestionsBox.style.display = 'none';
+    }
+});
+</script>
+
+</body>
+</html>

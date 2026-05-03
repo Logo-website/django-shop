@@ -1,0 +1,103 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<h1 class="section-title mb-4"><i class="bi bi-basket2"></i> Корзина</h1>
+
+{% if cart %}
+<div class="card mb-4">
+    <div class="card-body p-0">
+        <table class="table mb-0">
+            <thead style="background: var(--green-bg);">
+                <tr>
+                    <th class="ps-4">Товар</th>
+                    <th>Цена</th>
+                    <th>Кол-во</th>
+                    <th>Сумма</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td class="ps-4 fw-bold" style="color: var(--green-dark);">{{ item.product.name }}</td>
+                    <td>{{ item.price }} ₽</td>
+                    <td>
+                        <div class="d-flex align-items-center gap-1">
+                            <a href="{% url 'shop:cart_update' item.product.id %}?action=decrease" class="btn btn-sm btn-outline-secondary" style="border-radius: 8px; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-dash"></i>
+                            </a>
+                            <span class="fw-bold px-2">{{ item.quantity }}</span>
+                            <a href="{% url 'shop:cart_update' item.product.id %}?action=increase" class="btn btn-sm btn-outline-secondary" style="border-radius: 8px; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-plus"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td class="fw-bold" style="color: var(--green-main);">{{ item.total_price }} ₽</td>
+                    <td>
+                        <a href="{% url 'shop:cart_remove' item.product.id %}" class="btn btn-sm btn-outline-danger" style="border-radius: 8px;">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 style="color: var(--green-dark);"><i class="bi bi-tag"></i> Промокод</h5>
+                {% if coupon %}
+                <div class="alert mb-2" style="background: var(--green-pale); color: var(--green-dark); border: none; border-radius: 12px;">
+                    <i class="bi bi-check-circle"></i> Купон <strong>{{ coupon.code }}</strong> применён: скидка {{ coupon.discount }}%
+                </div>
+                {% endif %}
+                {% if coupon_error %}
+                <div class="alert alert-danger mb-2" style="border-radius: 12px;">{{ coupon_error }}</div>
+                {% endif %}
+                <form method="post" action="{% url 'shop:coupon_apply' %}" class="d-flex gap-2">
+                    {% csrf_token %}
+                    {{ coupon_form.code }}
+                    <button type="submit" class="btn btn-cart px-4">Применить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card" style="border: 2px solid var(--green-main);">
+            <div class="card-body">
+                <h5 style="color: var(--green-dark);"><i class="bi bi-receipt"></i> Итого</h5>
+                {% if coupon %}
+                <p class="text-muted"><s>{{ cart.get_total_price }} ₽</s></p>
+                <p style="color: var(--green-main);"><i class="bi bi-tag-fill"></i> Скидка: −{{ discount_amount|floatformat:2 }} ₽</p>
+                <div class="price-tag" style="font-size: 2rem;">{{ total_after_discount|floatformat:2 }} ₽</div>
+                {% else %}
+                <div class="price-tag" style="font-size: 2rem;">{{ cart.get_total_price }} ₽</div>
+                {% endif %}
+                <a href="{% url 'shop:order_create' %}" class="btn btn-accent btn-lg w-100 mt-3">
+                    <i class="bi bi-bag-check"></i> Оформить заказ
+                </a>
+                <a href="{% url 'shop:product_list' %}" class="btn btn-detail w-100 mt-2">
+                    <i class="bi bi-arrow-left"></i> Продолжить покупки
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-basket" style="font-size: 4rem; color: var(--green-pale);"></i>
+    <p class="mt-3 text-muted fs-5">Корзина пуста</p>
+    <a href="{% url 'shop:product_list' %}" class="btn btn-cart btn-lg mt-2">
+        <i class="bi bi-tree"></i> Перейти в каталог
+    </a>
+</div>
+{% endif %}
+{% endblock %}
