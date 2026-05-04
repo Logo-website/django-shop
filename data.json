@@ -1,0 +1,1309 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$beRmhheW76ZJPQ2TKwSYvq$PY1wJ2f9/HPtBfURAXbOD7jBDaufv1TGtt1nHhngyTQ=",
+    "last_login": "2026-05-02T05:01:57.461Z",
+    "is_superuser": true,
+    "username": "Amirkhan",
+    "first_name": "п",
+    "last_name": "",
+    "email": "test@mail.ru",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-04-28T05:06:55Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$7r24ttFFhCMKcfvftINSRp$Z/3NcakhurLSpO/g7JiB7yi0IrAl98ZMrYKUG23Bbwo=",
+    "last_login": "2026-05-02T04:33:17.277Z",
+    "is_superuser": false,
+    "username": "dangen325",
+    "first_name": "5",
+    "last_name": "",
+    "email": "dangen325@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-05-02T03:26:55.816Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$vSa37ZqjGwTbolNTYQn1mL$DwZxfsr0kMZY08QaRINcP1uPNS1be+o+nPHqhkhvXWg=",
+    "last_login": "2026-05-02T04:50:10.982Z",
+    "is_superuser": false,
+    "username": "mural0zorg",
+    "first_name": "",
+    "last_name": "",
+    "email": "mural0zorg@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-05-02T04:50:10.241Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 3,
+  "fields": {
+    "name": "Хвойные",
+    "slug": "hvojnye"
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 4,
+  "fields": {
+    "name": "Лиственные",
+    "slug": "listvennye"
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 5,
+  "fields": {
+    "name": "Плодовые",
+    "slug": "plodovye"
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 6,
+  "fields": {
+    "name": "Декоративные кустарники",
+    "slug": "dekorativnye-kustarniki"
+  }
+},
+{
+  "model": "shop.category",
+  "pk": 7,
+  "fields": {
+    "name": "Тропические",
+    "slug": "tropicheskie"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 3,
+  "fields": {
+    "category": 3,
+    "name": "Сосна",
+    "slug": "sosna",
+    "image": "products/Screenshot_2026-04-29_095152.png",
+    "description": "Самая распространённая хвойная порода в строительстве. Доступная, лёгкая, смолистая древесина с хорошей прочностью. Применяется в каркасном строительстве, мебели, отделке и столярке.",
+    "price": "1000.00",
+    "available": true,
+    "created": "2026-04-28T14:14:57.980Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 4,
+  "fields": {
+    "category": 3,
+    "name": "Ель",
+    "slug": "el",
+    "image": "products/Screenshot_2026-04-29_094527.png",
+    "description": "Хвойная порода со светлой, лёгкой древесиной и равномерной структурой. Широко используется в строительстве, производстве бумаги и изготовлении музыкальных инструментов. Хорошо поддаётся обработке.",
+    "price": "1500.00",
+    "available": true,
+    "created": "2026-04-28T14:15:25.350Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 5,
+  "fields": {
+    "category": 3,
+    "name": "Лиственница",
+    "slug": "listvennica",
+    "image": "products/Screenshot_2026-04-29_094441.png",
+    "description": "Самая прочная и влагостойкая хвойная порода. Не гниёт в воде, долговечна без специальной обработки. Идеальна для наружных конструкций, террас, причалов и фасадов.",
+    "price": "2000.00",
+    "available": true,
+    "created": "2026-04-28T14:15:40.909Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 6,
+  "fields": {
+    "category": 3,
+    "name": "Кедр",
+    "slug": "kedr",
+    "image": "products/Screenshot_2026-04-29_094219.png",
+    "description": "Хвойное дерево с ароматной, мягкой древесиной и выраженными антисептическими свойствами. Высоко ценится в отделке бань, изготовлении мебели и строительстве. Орехи — ценный пищевой продукт.",
+    "price": "4500.00",
+    "available": true,
+    "created": "2026-04-28T14:16:02.909Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 7,
+  "fields": {
+    "category": 3,
+    "name": "Пихта",
+    "slug": "pihta",
+    "image": "products/Screenshot_2026-04-29_094954.png",
+    "description": "Хвойное дерево с мягкой, лёгкой древесиной без смоляных ходов. Не имеет резкого запаха, подходит для внутренней отделки, тары и целлюлозного производства.",
+    "price": "3000.00",
+    "available": true,
+    "created": "2026-04-28T14:16:18.647Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 8,
+  "fields": {
+    "category": 4,
+    "name": "Береза",
+    "slug": "bereza",
+    "image": "products/Screenshot_2026-04-29_094615.png",
+    "description": "Светлая, легко обрабатываемая древесина с однородной текстурой. Широко применяется в мебельном производстве, отделке и изготовлении фанеры. Одна из самых распространённых пород в России.",
+    "price": "300.00",
+    "available": true,
+    "created": "2026-04-28T14:17:10.956Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 9,
+  "fields": {
+    "category": 4,
+    "name": "Дуб",
+    "slug": "dub",
+    "image": "products/Screenshot_2026-04-29_094045.png",
+    "description": "Твёрдая, долговечная древесина с выраженной текстурой и высокой стойкостью к влаге. Классический материал для мебели, паркета, бочек и несущих конструкций. Символ прочности и надёжности.",
+    "price": "600.00",
+    "available": true,
+    "created": "2026-04-28T14:17:22.012Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 10,
+  "fields": {
+    "category": 4,
+    "name": "Клён",
+    "slug": "klyon",
+    "image": "products/Screenshot_2026-04-29_094302.png",
+    "description": "Лиственная порода с твёрдой, светлой древесиной и красивым волнистым рисунком. Применяется в мебельном деле, производстве музыкальных инструментов и спортивного инвентаря.",
+    "price": "200.00",
+    "available": true,
+    "created": "2026-04-28T14:17:36.534Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 11,
+  "fields": {
+    "category": 4,
+    "name": "Липа",
+    "slug": "lipa",
+    "image": "products/Screenshot_2026-04-29_094345.png",
+    "description": "Мягкая, однородная древесина белого цвета, легко поддающаяся резьбе. Традиционный материал для художественной резьбы, посуды и банной отделки. Липовый мёд считается одним из лучших.",
+    "price": "900.00",
+    "available": true,
+    "created": "2026-04-28T14:17:52.781Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 12,
+  "fields": {
+    "category": 4,
+    "name": "Ясень",
+    "slug": "yasen",
+    "image": "",
+    "description": "Твёрдая, упругая древесина с красивой выраженной текстурой. Отличная ударная вязкость. Применяется в производстве спортивного инвентаря, рукояток инструментов, мебели и паркета.",
+    "price": "1500.00",
+    "available": true,
+    "created": "2026-04-28T14:18:07.989Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 13,
+  "fields": {
+    "category": 5,
+    "name": "Яблоня",
+    "slug": "yablonya",
+    "image": "",
+    "description": "Самое распространённое плодовое дерево в России. Твёрдая, плотная древесина с тонкой текстурой, хороша для резьбы и токарки. Множество сортов с разными сроками созревания.",
+    "price": "2000.00",
+    "available": true,
+    "created": "2026-04-28T14:18:41.325Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 14,
+  "fields": {
+    "category": 5,
+    "name": "Груша",
+    "slug": "grusha",
+    "image": "products/Screenshot_2026-04-29_094009.png",
+    "description": "Плодовая порода с плотной, мелкозернистой древесиной розоватого тона. Отлично подходит для резьбы, токарных работ и изготовления музыкальных инструментов. Даёт сладкие сочные плоды.",
+    "price": "3000.00",
+    "available": true,
+    "created": "2026-04-28T14:18:55.838Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 15,
+  "fields": {
+    "category": 5,
+    "name": "Вишня",
+    "slug": "vishnya",
+    "image": "products/Screenshot_2026-04-29_093914.png",
+    "description": "Плодовое дерево с красновато-розовой древесиной благородного оттенка. Ценится в столярном деле за красивую текстуру и лёгкость полировки. Плоды — сочные кисло-сладкие ягоды.",
+    "price": "225.00",
+    "available": true,
+    "created": "2026-04-28T14:19:09.855Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 16,
+  "fields": {
+    "category": 5,
+    "name": "Слива",
+    "slug": "sliva",
+    "image": "products/Screenshot_2026-04-29_095340.png",
+    "description": "Плодовое дерево с твёрдой красновато-коричневой древесиной. Используется в мелкой столярке и токарных изделиях. Даёт сочные плоды, применяемые в кулинарии и заготовках.",
+    "price": "2499.00",
+    "available": true,
+    "created": "2026-04-28T14:19:32.493Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 17,
+  "fields": {
+    "category": 5,
+    "name": "Черешня",
+    "slug": "chereshnya",
+    "image": "",
+    "description": "Плодовое дерево с тёплой розовато-коричневой древесиной, темнеющей со временем. Популярна в мебельном производстве за благородный оттенок. Крупные сладкие ягоды созревают в начале лета.",
+    "price": "6700.00",
+    "available": true,
+    "created": "2026-04-28T14:19:47.605Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 18,
+  "fields": {
+    "category": 6,
+    "name": "Сирень",
+    "slug": "siren",
+    "image": "products/Screenshot_2026-04-29_095255.png",
+    "description": "Крупный декоративный кустарник с пышным ароматным цветением весной. Множество сортов с белыми, розовыми и фиолетовыми соцветиями. Морозоустойчива, долговечна, минимальный уход.",
+    "price": "2656.00",
+    "available": true,
+    "created": "2026-04-28T14:20:33.946Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 19,
+  "fields": {
+    "category": 6,
+    "name": "Барбарис",
+    "slug": "barbaris",
+    "image": "products/Screenshot_2026-04-29_093708.png",
+    "description": "Колючий кустарник с яркой осенней листвой и декоративными ягодами. Отлично подходит для живых изгородей и бордюров. Неприхотлив, устойчив к морозам и засухе.",
+    "price": "450.00",
+    "available": true,
+    "created": "2026-04-28T14:20:49.350Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 20,
+  "fields": {
+    "category": 6,
+    "name": "Спирея",
+    "slug": "spireya",
+    "image": "",
+    "description": "Компактный декоративный кустарник с обильным цветением белого или розового цвета. Неприхотлива, быстро растёт, легко формируется стрижкой. Подходит для бордюров и невысоких изгородей.",
+    "price": "500.00",
+    "available": true,
+    "created": "2026-04-28T14:21:15.155Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 21,
+  "fields": {
+    "category": 6,
+    "name": "Дёрен",
+    "slug": "dyoren",
+    "image": "products/Screenshot_2026-04-29_094127.png",
+    "description": "Декоративный кустарник с яркими побегами красного или жёлтого цвета, эффектными в зимнее время. Быстрорастущий, морозостойкий, неприхотлив к почве. Идеален для групповых посадок.",
+    "price": "3767.00",
+    "available": true,
+    "created": "2026-04-28T14:21:29.838Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 22,
+  "fields": {
+    "category": 7,
+    "name": "Махогони",
+    "slug": "mahogoni",
+    "image": "products/Screenshot_2026-04-29_094800.png",
+    "description": "Элитная тропическая порода красно-коричневого цвета с характерным золотистым блеском. Легко обрабатывается, стабильна при перепадах влажности. Используется в люксовой мебели и судостроении.",
+    "price": "10000.00",
+    "available": true,
+    "created": "2026-04-28T14:25:14.061Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 23,
+  "fields": {
+    "category": 7,
+    "name": "Тик",
+    "slug": "tik",
+    "image": "",
+    "description": "Тропическая порода с высоким содержанием природных масел, что обеспечивает исключительную влагостойкость. Золотисто-коричневый цвет. Классический материал для палуб, садовой мебели и ванных комнат.",
+    "price": "2565.00",
+    "available": true,
+    "created": "2026-04-28T14:25:34.868Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 24,
+  "fields": {
+    "category": 7,
+    "name": "Венге",
+    "slug": "venge",
+    "image": "",
+    "description": "Тропическая порода из Африки с тёмно-коричневой древесиной и выраженным контрастным рисунком. Высокая прочность и устойчивость к износу. Используется в элитной мебели и напольных покрытиях.",
+    "price": "4600.00",
+    "available": true,
+    "created": "2026-04-28T14:25:47.380Z"
+  }
+},
+{
+  "model": "shop.product",
+  "pk": 25,
+  "fields": {
+    "category": 7,
+    "name": "Палисандр",
+    "slug": "palisandr",
+    "image": "products/Screenshot_2026-04-29_095433.png",
+    "description": "Ценная тропическая древесина с богатой палитрой от шоколадного до фиолетового оттенка. Очень плотная и твёрдая. Применяется в производстве музыкальных инструментов и дорогой мебели.",
+    "price": "8000.00",
+    "available": true,
+    "created": "2026-04-28T14:26:07.939Z"
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 1,
+  "fields": {
+    "user": null,
+    "first_name": "Фархуад",
+    "last_name": "Эрстет",
+    "phone": "+1848495484",
+    "address": "город Нью-Йорк",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-28T12:55:52.998Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 2,
+  "fields": {
+    "user": null,
+    "first_name": "Фархуад",
+    "last_name": "Эрстет",
+    "phone": "+1848495484",
+    "address": "город Нью-Йорк",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-28T13:02:48.193Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 3,
+  "fields": {
+    "user": null,
+    "first_name": "Фархуад",
+    "last_name": "Эрстет",
+    "phone": "+1848495484",
+    "address": "город Нью-Йорк",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-28T13:02:53.279Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "к",
+    "last_name": "как",
+    "phone": "кккака",
+    "address": "кака",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:03:47.162Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "вв",
+    "last_name": "вв",
+    "phone": "вв",
+    "address": "вв",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:05:55.979Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "вв",
+    "last_name": "вв",
+    "phone": "вв",
+    "address": "вв",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:07:05.272Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "вв",
+    "last_name": "вв",
+    "phone": "вв",
+    "address": "вв",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:07:07.847Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "а",
+    "last_name": "а",
+    "phone": "а",
+    "address": "уа",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:07:19.440Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "а",
+    "last_name": "а",
+    "phone": "а",
+    "address": "уа",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:09:24.462Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 10,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "а",
+    "last_name": "а",
+    "phone": "а",
+    "address": "уа",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:09:28.292Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 11,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "а",
+    "last_name": "а",
+    "phone": "а",
+    "address": "уа",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:11:13.772Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 12,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "а",
+    "last_name": "а",
+    "phone": "а",
+    "address": "уа",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:11:16.297Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 13,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "п",
+    "last_name": "п",
+    "phone": "п",
+    "address": "п",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:14:55.680Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 14,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "п",
+    "last_name": "п",
+    "phone": "п",
+    "address": "п",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:14:57.660Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 15,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "п",
+    "last_name": "п",
+    "phone": "п",
+    "address": "п",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:14:58.414Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 16,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "п",
+    "last_name": "п",
+    "phone": "п",
+    "address": "п",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:15:01.997Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 17,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "п",
+    "last_name": "п",
+    "phone": "п",
+    "address": "п",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:15:02.545Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 18,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "к",
+    "last_name": "к",
+    "phone": "к",
+    "address": "к",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:15:14.634Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 19,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "к",
+    "last_name": "к",
+    "phone": "к",
+    "address": "к",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:15:15.479Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 20,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "к",
+    "last_name": "к",
+    "phone": "к",
+    "address": "к",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T03:15:16.419Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 21,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "d",
+    "last_name": "d",
+    "phone": "d",
+    "address": "d",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:07:41.841Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 22,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "d",
+    "last_name": "d",
+    "phone": "d",
+    "address": "d",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:07:44.534Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 23,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "d",
+    "last_name": "d",
+    "phone": "d",
+    "address": "d",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:10:13.752Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 24,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "а",
+    "last_name": "а",
+    "phone": "а",
+    "address": "аа",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:10:24.709Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 25,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "а",
+    "last_name": "а",
+    "phone": "а",
+    "address": "аа",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:10:27.112Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 26,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "в",
+    "last_name": "в",
+    "phone": "в",
+    "address": "в",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:11:50.113Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 27,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "в",
+    "last_name": "в",
+    "phone": "в",
+    "address": "в",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:16:22.377Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 28,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "р",
+    "last_name": "р",
+    "phone": "р",
+    "address": "р",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:33:49.475Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 29,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "н",
+    "last_name": "рр",
+    "phone": "р",
+    "address": "р",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T04:56:10.480Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 30,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "в",
+    "last_name": "в",
+    "phone": "в",
+    "address": "в",
+    "comment": null,
+    "payment_method": "cash",
+    "created": "2026-04-29T05:06:37.114Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.order",
+  "pk": 38,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "first_name": "п",
+    "last_name": "",
+    "phone": "п",
+    "address": "Респ. Башкортостан, г. Уфа, ул. Лесная, д. 3",
+    "comment": "",
+    "payment_method": "cash",
+    "created": "2026-05-02T05:09:18.667Z",
+    "paid": false
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 2,
+  "fields": {
+    "order": 4,
+    "product": 8,
+    "price": "300.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 3,
+  "fields": {
+    "order": 5,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 4,
+  "fields": {
+    "order": 6,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 5,
+  "fields": {
+    "order": 7,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 6,
+  "fields": {
+    "order": 8,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 7,
+  "fields": {
+    "order": 9,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 8,
+  "fields": {
+    "order": 10,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 9,
+  "fields": {
+    "order": 11,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 10,
+  "fields": {
+    "order": 12,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 11,
+  "fields": {
+    "order": 13,
+    "product": 15,
+    "price": "5500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 12,
+  "fields": {
+    "order": 13,
+    "product": 8,
+    "price": "300.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 13,
+  "fields": {
+    "order": 18,
+    "product": 8,
+    "price": "300.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 14,
+  "fields": {
+    "order": 21,
+    "product": 19,
+    "price": "2855.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 15,
+  "fields": {
+    "order": 24,
+    "product": 19,
+    "price": "2855.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 16,
+  "fields": {
+    "order": 26,
+    "product": 24,
+    "price": "4600.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 17,
+  "fields": {
+    "order": 27,
+    "product": 8,
+    "price": "300.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 18,
+  "fields": {
+    "order": 28,
+    "product": 8,
+    "price": "300.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 19,
+  "fields": {
+    "order": 29,
+    "product": 19,
+    "price": "450.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 20,
+  "fields": {
+    "order": 29,
+    "product": 8,
+    "price": "300.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 21,
+  "fields": {
+    "order": 30,
+    "product": 11,
+    "price": "900.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.orderitem",
+  "pk": 30,
+  "fields": {
+    "order": 38,
+    "product": 4,
+    "price": "1500.00",
+    "quantity": 1
+  }
+},
+{
+  "model": "shop.favorite",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "product": 11,
+    "created": "2026-04-29T05:00:27.973Z"
+  }
+},
+{
+  "model": "shop.favorite",
+  "pk": 12,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "product": 24,
+    "created": "2026-04-29T05:42:01.810Z"
+  }
+},
+{
+  "model": "shop.review",
+  "pk": 1,
+  "fields": {
+    "product": 19,
+    "user": [
+      "Amirkhan"
+    ],
+    "text": "ужас",
+    "rating": 3,
+    "created": "2026-04-29T02:46:54.382Z"
+  }
+},
+{
+  "model": "shop.review",
+  "pk": 2,
+  "fields": {
+    "product": 24,
+    "user": [
+      "Amirkhan"
+    ],
+    "text": "дорого",
+    "rating": 1,
+    "created": "2026-04-29T02:50:33.967Z"
+  }
+},
+{
+  "model": "shop.review",
+  "pk": 3,
+  "fields": {
+    "product": 11,
+    "user": [
+      "dangen325"
+    ],
+    "text": "рпа",
+    "rating": 3,
+    "created": "2026-05-02T03:53:31.776Z"
+  }
+},
+{
+  "model": "shop.review",
+  "pk": 4,
+  "fields": {
+    "product": 19,
+    "user": [
+      "dangen325"
+    ],
+    "text": "неплохо",
+    "rating": 4,
+    "created": "2026-05-02T04:48:53.097Z"
+  }
+},
+{
+  "model": "shop.coupon",
+  "pk": 1,
+  "fields": {
+    "code": "SALE20",
+    "discount": 10,
+    "active": true,
+    "valid_from": "2026-04-20T13:00:00Z",
+    "valid_to": "2026-05-10T13:00:00Z"
+  }
+},
+{
+  "model": "shop.profile",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "Amirkhan"
+    ],
+    "phone": "п"
+  }
+},
+{
+  "model": "shop.profile",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "dangen325"
+    ],
+    "phone": "5"
+  }
+},
+{
+  "model": "shop.profile",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "mural0zorg"
+    ],
+    "phone": ""
+  }
+},
+{
+  "model": "shop.otpcode",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "dangen325"
+    ],
+    "code": "890111",
+    "created": "2026-05-02T03:28:19.196Z",
+    "is_used": true
+  }
+},
+{
+  "model": "shop.otpcode",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "dangen325"
+    ],
+    "code": "765507",
+    "created": "2026-05-02T03:42:26.904Z",
+    "is_used": true
+  }
+},
+{
+  "model": "shop.otpcode",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "dangen325"
+    ],
+    "code": "116389",
+    "created": "2026-05-02T03:44:05.232Z",
+    "is_used": true
+  }
+},
+{
+  "model": "shop.otpcode",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "dangen325"
+    ],
+    "code": "410178",
+    "created": "2026-05-02T04:33:01.495Z",
+    "is_used": true
+  }
+}
+]
