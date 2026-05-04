@@ -41,7 +41,8 @@ def product_list(request, category_slug=None):
     elif sort == 'popular':
         products = products.annotate(order_count=Count('orderitem')).order_by('-order_count')
     elif sort == 'rating':
-        products = products.order_by('-avg_rating')
+        from django.db.models import F
+        products = products.order_by(F('avg_rating').desc(nulls_last=True))
 
     paginator = Paginator(products, 6)
     page_number = request.GET.get('page')
