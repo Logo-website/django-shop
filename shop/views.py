@@ -13,27 +13,33 @@ from django.urls import reverse
 
 
 def product_list(request, category_slug=None):
+    from django.db.models import Avg, Count, F
+
+    # 1. Парсим параметры запроса
+    query = request.GET.get('q', '').strip()
+    sort = request.GET.get('sort', 'rating')
+    page_number = request.GET.get('page')
+
+    # 2. Резолвим категорию, если она указана
     category = None
-    categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
-
-    query = request.GET.get('q')
-    if query:
-        q_lower = query.lower()
-        matching_ids = [p.id for p in products if q_lower in p.name.lower()]
-        products = products.filter(id__in=matching_ids)
-
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
+
+    # 3. Строим базовый queryset
+    products = Product.objects.filter(available=True)
+
+    if category:
         products = products.filter(category=category)
 
-    from django.db.models import Avg, Count
+    if query:
+        products = products.filter(name__icontains=query)
+
+    # 4. Аннотации и сортировка
     products = products.annotate(
         avg_rating=Avg('reviews__rating'),
         review_count=Count('reviews'),
     )
 
-    sort = request.GET.get('sort', 'rating')
     if sort == 'price_asc':
         products = products.order_by('price')
     elif sort == 'price_desc':
@@ -41,13 +47,14 @@ def product_list(request, category_slug=None):
     elif sort == 'popular':
         products = products.annotate(order_count=Count('orderitem')).order_by('-order_count')
     elif sort == 'rating':
-        from django.db.models import F
         products = products.order_by(F('avg_rating').desc(nulls_last=True))
 
+    # 5. Пагинация
     paginator = Paginator(products, 6)
-    page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    # 6. Дополнительные данные для шаблона
+    categories = Category.objects.all()
     favorite_ids = []
     if request.user.is_authenticated:
         favorite_ids = Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
@@ -134,10 +141,23 @@ def cart_detail(request):
 
 
 def cart_add(request, product_id):
+    from django.contrib import messages
+    from django.http import JsonResponse
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
     cart.add(product)
-    return redirect('shop:cart_detail')
+
+    # Если AJAX-запрос — вернуть JSON (без перезагрузки)
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'success': True,
+            'product_name': product.name,
+            'cart_total': len(cart),
+        })
+
+    # Если обычный запрос (без JS) — редирект как раньше
+    messages.success(request, f'«{product.name}» добавлен в корзину')
+    return redirect(request.META.get('HTTP_REFERER', 'shop:product_list'))
 
 
 def cart_remove(request, product_id):
@@ -203,24 +223,32 @@ def register_view(request):
             import resend
             import random
             from django.conf import settings
-            # Сохраняем данные в сессию, не создаём юзера
-            request.session['reg_email'] = form.cleaned_data['email']
-            request.session['reg_password'] = form.cleaned_data['password1']
-            # Генерируем код
+            from .models import OTPCode
+
+            # Создаём НЕАКТИВНОГО пользователя — пароль уже захеширован формой
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+
+            # Создаём OTP в БД, привязываем к пользователю
             code = str(random.randint(100000, 999999))
-            request.session['reg_otp'] = code
-            request.session['reg_otp_time'] = str(timezone.now())
+            OTPCode.objects.create(user=user, code=code)
+
+            # В сессию кладём ТОЛЬКО id пользователя
+            request.session['pending_user_id'] = user.id
+
             # Отправляем письмо
             resend.api_key = settings.RESEND_API_KEY
             try:
                 resend.Emails.send({
                     'from': 'noreply@progardengreen.ru',
-                    'to': [form.cleaned_data['email']],
+                    'to': [user.email],
                     'subject': 'Подтверждение регистрации — Зелёный Сад',
                     'html': f'<p>Для завершения регистрации введите код:</p><p><strong style="font-size:24px">{code}</strong></p><p>Код действителен 10 минут.</p>',
                 })
             except Exception as e:
                 print(f'Ошибка отправки: {e}')
+
             return redirect('shop:register_verify')
     else:
         form = RegisterForm()
@@ -228,43 +256,42 @@ def register_view(request):
 
 
 def register_verify(request):
-    email = request.session.get('reg_email')
-    if not email:
+    user_id = request.session.get('pending_user_id')
+    if not user_id:
+        return redirect('shop:register')
+
+    from .models import OTPCode
+
+    try:
+        user = User.objects.get(id=user_id, is_active=False)
+    except User.DoesNotExist:
+        # Юзер уже активирован или удалён
+        request.session.pop('pending_user_id', None)
         return redirect('shop:register')
 
     if request.method == 'POST':
         code = request.POST.get('code', '').strip()
-        saved_code = request.session.get('reg_otp')
-        saved_time = request.session.get('reg_otp_time')
+        otp = OTPCode.objects.filter(user=user, code=code, is_used=False).last()
 
-        # Проверяем срок действия (10 минут)
-        from datetime import datetime
-        import pytz
-        otp_time = datetime.fromisoformat(saved_time).replace(tzinfo=pytz.UTC)
-        elapsed = (timezone.now() - otp_time).seconds
-
-        if code == saved_code and elapsed < 600:
-            # Создаём пользователя
-            password = request.session.get('reg_password')
-            base = email.split('@')[0][:30]
-            username = base
-            counter = 1
-            while User.objects.filter(username=username).exists():
-                username = f'{base}{counter}'
-                counter += 1
-            user = User.objects.create_user(username=username, email=email, password=password)
-            # Очищаем сессию
-            for key in ['reg_email', 'reg_password', 'reg_otp', 'reg_otp_time']:
-                request.session.pop(key, None)
+        if otp and otp.is_valid():
+            # Активируем пользователя
+            user.is_active = True
+            user.save()
+            # Гасим использованный код
+            otp.is_used = True
+            otp.save()
+            # Чистим сессию
+            request.session.pop('pending_user_id', None)
+            # Логиним пользователя
             login(request, user)
             return redirect('shop:product_list')
         else:
             return render(request, 'shop/register_verify.html', {
                 'error': 'Неверный или истёкший код.',
-                'email': email,
+                'email': user.email,
             })
 
-    return render(request, 'shop/register_verify.html', {'email': email})
+    return render(request, 'shop/register_verify.html', {'email': user.email})
 
 
 def login_view(request):
@@ -273,6 +300,10 @@ def login_view(request):
         password = request.POST.get('password', '')
         try:
             user_obj = User.objects.get(email=email)
+            if not user_obj.is_active:
+                return render(request, 'shop/login.html', {
+                    'error': 'Аккаунт не подтверждён. Завершите регистрацию по ссылке из письма.'
+                })
             user = authenticate(request, username=user_obj.username, password=password)
             if user is not None:
                 # Генерируем OTP
@@ -531,9 +562,7 @@ def product_search_suggestions(request):
     if len(query) < 1:
         return JsonResponse({'results': []})
 
-    q_lower = query.lower()
-    products = Product.objects.filter(available=True)
-    matching = [p for p in products if p.name.lower().startswith(q_lower)][:7]
+    matching = Product.objects.filter(available=True, name__istartswith=query)[:7]
 
     results = [{
         'id': p.id,

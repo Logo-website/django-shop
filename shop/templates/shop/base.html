@@ -365,6 +365,14 @@
             justify-content: center;
         }
 
+        /* === LONG TEXT WRAP === */
+        .product-description,
+        .review-text {
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
         /* === MISC === */
         .section-title {
             font-family: 'Merriweather', serif;
@@ -456,6 +464,14 @@
     </div>
 </nav>
 
+<!-- Единое уведомление — всегда фиксировано справа сверху -->
+<div id="cart-toast" style="display:none; position:fixed; top:20px; right:20px; z-index:9999; min-width:300px;">
+    <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius:12px; border:none; background:var(--green-pale); color:var(--green-dark); font-weight:500; box-shadow:0 8px 25px rgba(0,0,0,0.15);">
+        <i class="bi bi-basket2-fill"></i> <span id="cart-toast-text"></span>
+        <button type="button" class="btn-close" onclick="document.getElementById('cart-toast').style.display='none'"></button>
+    </div>
+</div>
+
 <main class="container mt-4">
     {% block hero %}{% endblock %}
     {% block content %}{% endblock %}
@@ -545,6 +561,63 @@ document.addEventListener('click', function(e) {
         suggestionsBox.style.display = 'none';
     }
 });
+</script>
+
+<script>
+    // Функция показа уведомления
+    function showCartToast(text) {
+        var toast = document.getElementById('cart-toast');
+        var toastText = document.getElementById('cart-toast-text');
+        toastText.textContent = text;
+        toast.style.display = 'block';
+        setTimeout(function() {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+
+    // Показываем Django messages через тот же toast (при перезагрузке страницы)
+    {% if messages %}
+        {% for message in messages %}
+            showCartToast('{{ message|escapejs }}');
+        {% endfor %}
+    {% endif %}
+
+    // AJAX добавление в корзину — без перезагрузки страницы
+    document.querySelectorAll('a[href*="/cart/add/"]').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var url = this.getAttribute('href');
+
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showCartToast('«' + data.product_name + '» добавлен в корзину');
+
+                    // Обновляем счётчик корзины в шапке
+                    var badge = document.querySelector('.badge-cart');
+                    if (badge) {
+                        badge.textContent = data.cart_total;
+                    } else {
+                        var cartBtn = document.querySelector('a[href*="cart"]');
+                        if (cartBtn) {
+                            var newBadge = document.createElement('span');
+                            newBadge.className = 'badge-cart';
+                            newBadge.textContent = data.cart_total;
+                            cartBtn.appendChild(newBadge);
+                        }
+                    }
+                }
+            })
+            .catch(function() {
+                window.location.href = url;
+            });
+        });
+    });
 </script>
 
 </body>

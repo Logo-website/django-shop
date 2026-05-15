@@ -46,7 +46,7 @@
         <div class="price-tag mb-3" style="font-size: 2rem;">{{ product.price }} ₽</div>
 
         {% if product.description %}
-        <div class="p-3 rounded mb-3" style="background: #fff; border-left: 4px solid var(--green-main);">
+        <div class="p-3 rounded mb-3 product-description" style="background: #fff; border-left: 4px solid var(--green-main);">
             <p class="mb-0">{{ product.description }}</p>
         </div>
         {% endif %}
@@ -128,7 +128,7 @@
             </div>
             <small class="text-muted">{{ review.created|date:"d.m.Y H:i" }}</small>
         </div>
-        <p class="mb-0">{{ review.text }}</p>
+        <p class="mb-0 review-text">{{ review.text }}</p>
     </div>
 </div>
 {% empty %}

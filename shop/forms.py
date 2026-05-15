@@ -69,18 +69,6 @@ class RegisterForm(UserCreationForm):
             validate_password_strength(password)
         return password
 
-    def clean_password2(self):
-        p2 = self.cleaned_data.get('password2')
-        return p2
-
-    def clean(self):
-        cleaned_data = super(UserCreationForm, self).clean()
-        p1 = cleaned_data.get('password1')
-        p2 = cleaned_data.get('password2')
-        if p1 and p2 and p1 != p2:
-            raise forms.ValidationError({'password2': 'Пароли не совпадают.'})
-        return cleaned_data
-
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data['password1'])
