@@ -66,10 +66,26 @@
                         <span class="fw-bold">{{ item.total_price }} ₽</span>
                     </li>
                     {% endfor %}
+
+                    {% if coupon %}
+                    <li class="list-group-item d-flex justify-content-between px-0 text-muted">
+                        <span>Сумма без скидки:</span>
+                        <span><s>{{ cart.get_total_price }} ₽</s></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0" style="color: var(--green-main);">
+                        <span><i class="bi bi-tag-fill"></i> Купон {{ coupon.code }} (−{{ coupon.discount }}%):</span>
+                        <span>−{{ discount_amount|floatformat:2 }} ₽</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between px-0">
+                        <span class="fw-bold">Итого</span>
+                        <span class="price-tag">{{ total_after_discount|floatformat:2 }} ₽</span>
+                    </li>
+                    {% else %}
                     <li class="list-group-item d-flex justify-content-between px-0">
                         <span class="fw-bold">Итого</span>
                         <span class="price-tag">{{ cart.get_total_price }} ₽</span>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

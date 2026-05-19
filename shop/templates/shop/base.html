@@ -433,9 +433,9 @@
         <div class="d-flex align-items-center gap-2">
             <a class="btn btn-outline-light nav-btn position-relative" href="{% url 'shop:cart_detail' %}">
                 <i class="bi bi-basket2"></i> Корзина
-                {% if cart_total_items %}
-                <span class="badge-cart">{{ cart_total_items }}</span>
-                {% endif %}
+                <span id="cart-badge" class="badge-cart" {% if not cart_total_items %}style="display:none"{% endif %}>
+                    {{ cart_total_items|default:0 }}
+                </span>
             </a>
             {% if user.is_authenticated %}
                 <a class="btn btn-outline-light nav-btn position-relative" href="{% url 'shop:favorite_list' %}">
@@ -531,29 +531,37 @@ searchInput.addEventListener('input', function() {
         return;
     }
 
-    searchTimeout = setTimeout(() => {
-        fetch(`/api/search/?q=${encodeURIComponent(query)}`)
-            .then(r => r.json())
-            .then(data => {
-                if (data.results.length === 0) {
-                    suggestionsBox.innerHTML = '<div class="p-3 text-muted text-center">Ничего не найдено</div>';
-                } else {
-                    suggestionsBox.innerHTML = data.results.map(p => `
-                        <a href="${p.url}" class="d-flex align-items-center p-2 text-decoration-none" style="color: #2b2b2b; border-bottom: 1px solid #f0f0f0;">
-                            ${p.image ? `<img src="${p.image}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px; margin-right: 10px;">` : '<div style="width: 40px; height: 40px; background: #b7e4c7; border-radius: 6px; margin-right: 10px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-tree" style="color: #2d6a4f;"></i></div>'}
-                            <div style="flex: 1;">
-                                <div style="font-weight: 600; color: #1a4d2e;">${p.name}</div>
-                                <small style="color: #2d6a4f;">${p.price} ₽</small>
-                            </div>
-                        </a>
-                    `).join('');
-                }
-                suggestionsBox.style.display = 'block';
-            })
-            .catch(() => {
-                suggestionsBox.style.display = 'none';
-            });
-    }, 300);
+    // Безопасное экранирование HTML — защита от XSS
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+searchTimeout = setTimeout(() => {
+    fetch(`/api/search/?q=${encodeURIComponent(query)}`)
+        .then(r => r.json())
+        .then(data => {
+            if (data.results.length === 0) {
+                suggestionsBox.innerHTML = '<div class="p-3 text-muted text-center">Ничего не найдено</div>';
+            } else {
+                suggestionsBox.innerHTML = data.results.map(p => `
+                    <a href="${escapeHtml(p.url)}" class="d-flex align-items-center p-2 text-decoration-none" style="color: #2b2b2b; border-bottom: 1px solid #f0f0f0;">
+                        ${p.image ? `<img src="${escapeHtml(p.image)}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px; margin-right: 10px;">` : '<div style="width: 40px; height: 40px; background: #b7e4c7; border-radius: 6px; margin-right: 10px; display: flex; align-items: center; justify-content: center;"><i class="bi bi-tree" style="color: #2d6a4f;"></i></div>'}
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: #1a4d2e;">${escapeHtml(p.name)}</div>
+                            <small style="color: #2d6a4f;">${escapeHtml(p.price)} ₽</small>
+                        </div>
+                    </a>
+                `).join('');
+            }
+            suggestionsBox.style.display = 'block';
+        })
+        .catch(() => {
+            suggestionsBox.style.display = 'none';
+        });
+}, 300);
+
 });
 
 document.addEventListener('click', function(e) {
@@ -599,18 +607,12 @@ document.addEventListener('click', function(e) {
                     showCartToast('«' + data.product_name + '» добавлен в корзину');
 
                     // Обновляем счётчик корзины в шапке
-                    var badge = document.querySelector('.badge-cart');
+                    var badge = document.getElementById('cart-badge');
                     if (badge) {
                         badge.textContent = data.cart_total;
-                    } else {
-                        var cartBtn = document.querySelector('a[href*="cart"]');
-                        if (cartBtn) {
-                            var newBadge = document.createElement('span');
-                            newBadge.className = 'badge-cart';
-                            newBadge.textContent = data.cart_total;
-                            cartBtn.appendChild(newBadge);
-                        }
+                         badge.style.display = data.cart_total > 0 ? 'flex' : 'none';
                     }
+
                 }
             })
             .catch(function() {

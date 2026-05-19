@@ -1,5 +1,10 @@
+import hashlib
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils.crypto import constant_time_compare
 
 
 class Category(models.Model):
@@ -34,9 +39,13 @@ class Product(models.Model):
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
         ordering = ['name']
+        indexes = [
+            models.Index(fields=['available', 'category']),
+        ]
 
     def __str__(self):
         return self.name
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Покупатель',
@@ -70,6 +79,14 @@ class Order(models.Model):
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES, verbose_name='Способ оплаты')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
     paid = models.BooleanField(default=False, verbose_name='Оплачен')
+    coupon = models.ForeignKey(
+        'Coupon',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Купон',
+    )
+    discount = models.PositiveIntegerField(default=0, verbose_name='Скидка (%)')
 
     class Meta:
         verbose_name = 'Заказ'
@@ -80,7 +97,21 @@ class Order(models.Model):
         return f'Заказ №{self.id}'
 
     def get_total_cost(self):
+        from decimal import Decimal
+        total = sum(item.get_cost() for item in self.items.all())
+        if self.discount:
+            total = total * (1 - Decimal(self.discount) / 100)
+        return total
+
+    def get_total_cost_before_discount(self):
         return sum(item.get_cost() for item in self.items.all())
+
+    def get_discount_amount(self):
+        from decimal import Decimal
+        if self.discount:
+            total = sum(item.get_cost() for item in self.items.all())
+            return total * Decimal(self.discount) / 100
+        return Decimal('0')
 
     def get_order_code(self):
         return f'ORD-{self.created.year}-{self.id:04d}'
@@ -98,6 +129,7 @@ class OrderItem(models.Model):
     def get_cost(self):
         return self.price * self.quantity
 
+
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='favorited_by')
@@ -110,6 +142,7 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f'{self.user.username} → {self.product.name}'
+
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
@@ -127,6 +160,7 @@ class Review(models.Model):
     def __str__(self):
         return f'{self.user.username} — {self.product.name} ({self.rating}★)'
 
+
 class Coupon(models.Model):
     code = models.CharField(max_length=50, unique=True, verbose_name='Код')
     discount = models.PositiveIntegerField(verbose_name='Скидка (%)')
@@ -141,6 +175,7 @@ class Coupon(models.Model):
     def __str__(self):
         return f'{self.code} (−{self.discount}%)'
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     phone = models.CharField(max_length=20, blank=True, verbose_name='Телефон')
@@ -148,26 +183,34 @@ class Profile(models.Model):
     def __str__(self):
         return f'Профиль {self.user.username}'
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-import random
 
 class OTPCode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    code = models.CharField(max_length=6)
+    code_hash = models.CharField(max_length=64)
     created = models.DateTimeField(auto_now_add=True)
     is_used = models.BooleanField(default=False)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['user', 'is_used', 'created'], name='shop_otpcod_user_id_795f14_idx'),
+        ]
+
+    @staticmethod
+    def hash_code(code: str) -> str:
+        return hashlib.sha256(code.encode()).hexdigest()
+
+    def check_code(self, code: str) -> bool:
+        return constant_time_compare(self.code_hash, self.hash_code(code))
+
     def is_valid(self):
         from django.utils import timezone
-        return not self.is_used and (timezone.now() - self.created).seconds < 600
+        return not self.is_used and (timezone.now() - self.created).total_seconds() < 600
 
     def __str__(self):
-        return f'{self.user.email} — {self.code}'
+        return f'OTP для {self.user.email}'

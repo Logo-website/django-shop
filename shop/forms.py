@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Order, Review
+from .models import Profile
 
 
 class OrderForm(forms.ModelForm):
@@ -108,9 +109,6 @@ class CouponForm(forms.Form):
         }),
         label='Промокод',
     )
-
-from .models import Profile
-
 
 class ProfileForm(forms.Form):
     first_name = forms.CharField(max_length=100, required=False, label='Имя',

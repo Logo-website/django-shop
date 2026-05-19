@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-
+from django.core.exceptions import ImproperlyConfigured
 load_dotenv()
 import dj_database_url
 """
@@ -26,11 +26,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY:
+    raise ImproperlyConfigured('SECRET_KEY environment variable is not set')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['.onrender.com', 'progardengreen.ru', 'www.progardengreen.ru', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'django-shop-ywgm.onrender.com',
+    'progardengreen.ru',
+    'www.progardengreen.ru',
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -172,6 +180,19 @@ else:
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
+# Безопасность на проде
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+
 # Стилизация Django messages под Bootstrap
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
@@ -181,3 +202,9 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'danger',
 }
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://progardengreen.ru',
+    'https://www.progardengreen.ru',
+    'https://django-shop-ywgm.onrender.com',
+]

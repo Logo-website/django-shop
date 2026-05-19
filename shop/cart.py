@@ -14,7 +14,7 @@ class Cart:
     def add(self, product, quantity=1, update=False):
         product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
+            self.cart[product_id] = {'quantity': 0}  # цену не храним
         if update:
             self.cart[product_id]['quantity'] = quantity
         else:
@@ -33,21 +33,27 @@ class Cart:
     def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
-        cart = self.cart.copy()
+        products_map = {str(p.id): p for p in products}
 
-        for product in products:
-            cart[str(product.id)]['product'] = product
-
-        for item in cart.values():
-            item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
-            yield item
+        for product_id, item_data in self.cart.items():
+            product = products_map.get(product_id)
+            if product:
+                item = dict(item_data)  # полная независимая копия
+                item['product'] = product
+                item['price'] = product.price
+                item['total_price'] = product.price * item['quantity']
+                yield item
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
+        product_ids = self.cart.keys()
+        products = {
+            str(p.id): p for p in Product.objects.filter(id__in=product_ids)
+        }
         return sum(
-            Decimal(item['price']) * item['quantity']
-            for item in self.cart.values()
+            products[pid].price * item['quantity']
+            for pid, item in self.cart.items()
+            if pid in products
         )

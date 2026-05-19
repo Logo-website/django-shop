@@ -86,13 +86,19 @@
                     {% if user.is_authenticated %}
                     <div class="position-absolute" style="top: 12px; right: 12px;">
                         {% if product.id in favorite_ids %}
-                        <a href="{% url 'shop:favorite_remove' product.id %}" class="heart-btn active" title="Убрать из избранного">
-                            <i class="bi bi-heart-fill"></i>
-                        </a>
+                        <form method="post" action="{% url 'shop:favorite_remove' product.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="heart-btn active" title="Убрать из избранного">
+                                <i class="bi bi-heart-fill"></i>
+                            </button>
+                        </form>
                         {% else %}
-                        <a href="{% url 'shop:favorite_add' product.id %}" class="heart-btn text-secondary" title="В избранное">
-                            <i class="bi bi-heart"></i>
-                        </a>
+                        <form method="post" action="{% url 'shop:favorite_add' product.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="heart-btn text-secondary" title="В избранное">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </form>
                         {% endif %}
                     </div>
                     {% endif %}

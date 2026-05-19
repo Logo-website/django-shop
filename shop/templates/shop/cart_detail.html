@@ -25,20 +25,31 @@
                     <td>{{ item.price }} ₽</td>
                     <td>
                         <div class="d-flex align-items-center gap-1">
-                            <a href="{% url 'shop:cart_update' item.product.id %}?action=decrease" class="btn btn-sm btn-outline-secondary" style="border-radius: 8px; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-dash"></i>
-                            </a>
+                            <form method="post" action="{% url 'shop:cart_update' item.product.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="decrease">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" style="border-radius: 8px; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                            </form>
                             <span class="fw-bold px-2">{{ item.quantity }}</span>
-                            <a href="{% url 'shop:cart_update' item.product.id %}?action=increase" class="btn btn-sm btn-outline-secondary" style="border-radius: 8px; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-plus"></i>
-                            </a>
+                            <form method="post" action="{% url 'shop:cart_update' item.product.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="increase">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" style="border-radius: 8px; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </form>
                         </div>
                     </td>
                     <td class="fw-bold" style="color: var(--green-main);">{{ item.total_price }} ₽</td>
                     <td>
-                        <a href="{% url 'shop:cart_remove' item.product.id %}" class="btn btn-sm btn-outline-danger" style="border-radius: 8px;">
-                            <i class="bi bi-trash"></i>
-                        </a>
+                        <form method="post" action="{% url 'shop:cart_remove' item.product.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius: 8px;">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -52,19 +63,32 @@
         <div class="card">
             <div class="card-body">
                 <h5 style="color: var(--green-dark);"><i class="bi bi-tag"></i> Промокод</h5>
+
                 {% if coupon %}
-                <div class="alert mb-2" style="background: var(--green-pale); color: var(--green-dark); border: none; border-radius: 12px;">
-                    <i class="bi bi-check-circle"></i> Купон <strong>{{ coupon.code }}</strong> применён: скидка {{ coupon.discount }}%
+                <div class="alert mb-2 d-flex justify-content-between align-items-center" style="background: var(--green-pale); color: var(--green-dark); border: none; border-radius: 12px;">
+                    <span><i class="bi bi-check-circle"></i> Купон <strong>{{ coupon.code }}</strong> применён: скидка {{ coupon.discount }}%</span>
+                    <form method="post" action="{% url 'shop:coupon_remove' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius: 8px;">
+                            <i class="bi bi-x-circle"></i> Отменить
+                        </button>
+                    </form>
                 </div>
                 {% endif %}
+
                 {% if coupon_error %}
-                <div class="alert alert-danger mb-2" style="border-radius: 12px;">{{ coupon_error }}</div>
+                <div class="alert alert-danger mb-2" style="border-radius: 12px;">
+                    <i class="bi bi-exclamation-circle"></i> {{ coupon_error }}
+                </div>
                 {% endif %}
+
+                {% if not coupon %}
                 <form method="post" action="{% url 'shop:coupon_apply' %}" class="d-flex gap-2">
                     {% csrf_token %}
                     {{ coupon_form.code }}
                     <button type="submit" class="btn btn-cart px-4">Применить</button>
                 </form>
+                {% endif %}
             </div>
         </div>
     </div>
